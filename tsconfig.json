@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@liquity/lib-base": ["./node_modules/@liquity/lib-base"],
+      "@liquity/lib-ethers": ["./node_modules/@liquity/lib-ethers"],
+      "@liquity/lib-react": ["./node_modules/@liquity/lib-react"],
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "build/types/**/*.ts",
+    "@liquity/providers",
+    "@liquity/lib-ethers",
+    "@liquity/lib-base",
+    "@liquity/lib-react"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
