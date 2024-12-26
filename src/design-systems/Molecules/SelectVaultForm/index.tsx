@@ -120,12 +120,12 @@ const SelectVaultForm: React.FC<VaultsFormProps> = ({ urlAddress }) => {
         address: BorrowerContractAdd,
         functionName: "openTrove",
         args: [
-          _maxFeePercentage,
-          _collateralAmount,
+          BigInt(_maxFeePercentage),
+          BigInt(_collateralAmount),
           _upperHint,
           _lowerHint,
         ],
-        value: _debtAmount
+        value: BigInt(_debtAmount)
       });
 
       await waitForTransaction(openTroveHash);

@@ -16,20 +16,7 @@ import {
   Percent
 } from "@liquity/lib-base";
 import { LiquityStoreProvider, useLiquitySelector } from "@liquity/lib-react";
-import {
-  selectForTroveChangeValidation,
-  validateTroveChange
-} from "../validation/validateTroveChange";
 
-const selector = (state: LiquityStoreState) => {
-  const { fees, price, accountBalance } = state;
-  return {
-    fees,
-    price,
-    accountBalance,
-    validationContext: selectForTroveChangeValidation(state)
-  };
-};
 const EMPTY_TROVE = new Trove(Decimal.ZERO, Decimal.ZERO);
 const TRANSACTION_ID = "trove-creation";
 const GAS_ROOM_ETH = Decimal.from(0.1);

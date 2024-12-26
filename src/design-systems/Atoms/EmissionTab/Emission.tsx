@@ -74,7 +74,7 @@ export const Emission: React.FC = () => {
               {DAOdata?.map((item: DaoDataInterface, key: number) => (
                 <tr key={key} className="text-body">
                   <td className="flex gap-2 items-center">
-                    <img src={item.img} />
+                    <img src={item.img} alt="image" />
                     {item?.label}
                   </td>
                   <td>0.0%</td>
