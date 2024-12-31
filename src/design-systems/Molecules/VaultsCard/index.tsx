@@ -148,7 +148,7 @@ const VaultsCard: React.FC<VaultsCardProps> = ({
 
         <button
           className={`mt-1 bg-[#3d404a] text-white font-bold text-md py-[6px] px-4 rounded-b-[18px]`}
-          onClick={() => history.push(`select/${"0xF6eF5A6a38DB44c0F8bb546B3a1f7A44a46Ef743"}`)}
+          onClick={() => history.push(`select/${"0x3f1e6c54B1f1e4870fb8D22653268c0477f0B61d"}`)}
         >
           Choose {name}-v2
         </button>

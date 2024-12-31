@@ -1,16 +1,16 @@
 export const DebtTokenContractAdd =
-  "0x188D9c51CBc3b49f7Dd5CEeB18470D25Df4e7645";
+  "0x1B942981cD10B915a69D2e477d60FE12233d947c";
   
 export const StabilityPoolContractAdd =
-  "0x4ca7B54C19FF63AAb6658D09e693735b282274F3";
+  "0xF388f95A0F3e3cbCb3b262B33A8ab91D09228e59";
 
-export const BorrowerContractAdd = "0x95445Be86D12cfd7877A6c609D2C7FA832eD953c";
+export const BorrowerContractAdd = "0xfc264B0C80212e9b6e1aD84729da641953e75dE5";
 
 export const LinkTokenContractAdd =
-  "0xF6eF5A6a38DB44c0F8bb546B3a1f7A44a46Ef743";
+  "0x3f1e6c54B1f1e4870fb8D22653268c0477f0B61d";
 
 export const OpenTroveContractAdd =
   "0x13677eeB51BE182164ae84F0B6A997B2BDd6Dbbb";
 
-export const BondTokenContractAdd =
-  "0x188D9c51CBc3b49f7Dd5CEeB18470D25Df4e7645";
+export const ChickenBondContractAdd =
+  "0x196Dc693266db4eD663810E316289537B09Fe451";

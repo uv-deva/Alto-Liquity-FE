@@ -1,5 +1,5 @@
 export type VaultType =
-  | "ETH"
+  | "TEstToken"
   | "rETH"
   | "cbETH"
   | "sfrxETH"
@@ -7,7 +7,6 @@ export type VaultType =
   | "weETH"
   | "ezETH"
   | "rsETH"
-  | "TEstToken";
 
 export interface VaultsCardProps {
   type?: VaultType;

@@ -59,15 +59,15 @@ const SelectVaultForm: React.FC<VaultsFormProps> = ({ urlAddress }) => {
     isPendingApprove ||
     isLoadingTroveData;
 
-  // const { balance, symbol, refetch } = useToken({
-  //   address: address as AddressString,
-  //   tokenAddress: urlAddress as AddressString,
-  //   abi: ApproveABI as Abi,
-  // });
-
-  const { data: balance } = useBalance({
-    address,
+  const { balance, symbol, refetch } = useToken({
+    address: address as AddressString,
+    tokenAddress: urlAddress as AddressString,
+    abi: ApproveABI as Abi,
   });
+
+  // const { data: balance } = useBalance({
+  //   address,
+  // });
 
   console.log(urlAddress);
   useEffect(() => {
@@ -120,12 +120,13 @@ const SelectVaultForm: React.FC<VaultsFormProps> = ({ urlAddress }) => {
         address: BorrowerContractAdd,
         functionName: "openTrove",
         args: [
+          urlAddress,
+          BigInt(_debtAmount),
           BigInt(_maxFeePercentage),
           BigInt(_collateralAmount),
           _upperHint,
           _lowerHint,
         ],
-        value: BigInt(_debtAmount)
       });
 
       await waitForTransaction(openTroveHash);
@@ -164,7 +165,7 @@ const SelectVaultForm: React.FC<VaultsFormProps> = ({ urlAddress }) => {
         if (trove?.[3] === 1) {
           throw new Error("You already have a trove.");
         }
-        // await handleApprove();
+        await handleApprove();
         await handleOpenTrove();
         refetchTrove();
         modal.setOpen({
@@ -191,8 +192,6 @@ const SelectVaultForm: React.FC<VaultsFormProps> = ({ urlAddress }) => {
       pending: "Transaction in progress...",
     });
   };
-
-  console.log("balance?.value", balance?.value)
 
   return (
     <div className="flex flex-col items-center justify-center w-full container">
@@ -227,7 +226,7 @@ const SelectVaultForm: React.FC<VaultsFormProps> = ({ urlAddress }) => {
               />
 
               <Typography className="text-md  font-medium">
-                {(Number(balance?.value)/10**18)} ETH
+              {balance} {symbol}
               </Typography>
             </div>
           </div>
@@ -256,7 +255,7 @@ const SelectVaultForm: React.FC<VaultsFormProps> = ({ urlAddress }) => {
               />
 
               <Typography className="text-body text-white font-medium">
-                {"ETH"}
+              {data?.name}
               </Typography>
             </div>
           </div>

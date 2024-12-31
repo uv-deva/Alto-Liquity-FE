@@ -9,6 +9,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { bigPoolData, bigPoolDataType } from "../PooltableTemplate/utils";
 import { useAccount } from "wagmi";
 import { UserAddressType } from "./interface";
+import {
+  ChickenBondContractAdd,
+} from "@/utils/Contract";
 
 const BondManageTemplate: React.FC = () => {
   const { address, isConnected } = useAccount();
@@ -21,7 +24,7 @@ const BondManageTemplate: React.FC = () => {
     tokenAdd: "",
     poolAdd: "",
   });
-  const tabs = [{ label: "Deposit" }, { label: "Withdraw" }];
+  const tabs = [{ label: "Create Bond" }];
   useMemo(() => {
     const cardData = bigPoolData.find(
       (card) => card.poolAddress === poolAddress
@@ -45,7 +48,6 @@ const BondManageTemplate: React.FC = () => {
 
   return (
     <div className="max-sm:p-[20px] max-w-[700px] lg:max-w-[1200px] w-full">
-      {data !== undefined ? (
         <>
           <div className="flex justify-between w-full flex-wrap">
             <button
@@ -64,7 +66,7 @@ const BondManageTemplate: React.FC = () => {
                 {data?.name}: {userAddress.tokenAdd}
               </div>
               <div className="bg-skyBlue py-[6px] px-[8px] sm:px-[12px] rounded-[18px] text-primary">
-                {data?.name} Bond: {userAddress.poolAdd}
+                {data?.name} Bond: {ChickenBondContractAdd.slice(0, 4)}...{ChickenBondContractAdd.slice(-4)}
               </div>
             </div>
           </div>
@@ -77,9 +79,9 @@ const BondManageTemplate: React.FC = () => {
               <div className="w-full border-separator border-b h-[1px]" />
               <div>
                 <div className="p-3 sm:p-6 text-[14px] sm:text-[16px] text-center">
-                  Deposit {data?.name} to earn LQTY rewards. During
-                  liquidations, your deposit will be used to purchase discounted
-                  collaterals. Read more.
+                When the bLUSD market price is less than 3% above the floor price,
+                it's not profitable to bond. Buying bLUSD from the market currently
+                generates a higher return than bondingRead more.
                 </div>
 
                 <div>
@@ -106,29 +108,71 @@ const BondManageTemplate: React.FC = () => {
             </div>
             <div>
               <div className="grid grid-cols-3 text-blue135 text-[11px] sm:text-[14px] font-bold px-[8px] sm:px-[13px] py-[10px] sm:py-[16px] rounded-[8px] shadow-card-shadow">
-                <div>APR</div>
-                <div className="flex gap-1 items-center">
-                  TVL{" "}
-                  <div className="h-[14px] w-[14px] fill-blue135">
+                <div>bLUSD</div>
+                <div className="flex gap-1 items-center pl-4">
+                  Statistics{" "}
+                  <div className="h-[14px] w-[14px] fill-blue135 ">
                     <InfoOutlineIcon />
                   </div>
                 </div>
-                <div>Your Deposits </div>
+                <div className="pl-4">Treasury </div>
               </div>
               <div className="w-full border-separator border-b h-[1px]" />
               <div className="grid grid-cols-3 text-[20px] sm:text-[32px] font-bold px-[13px] py-[11px] sm:py-[16px] bg-[#1A202C] rounded-[8px] shadow-card-shadow">
                 <div className="text-primary  font-bold flex items-start">
-                  {data?.boostedApr} <span className="text-[16px]">(2x)</span>{" "}
+                  <div className="text-sm text-white w-full">
+                    <div className="grid grid-cols-2 gap-y-2">
+                      <div>Market price:</div>
+                      <div className="font-semibold text-right">1.263 LUSD</div>
+                      <div>Fair price:</div>
+                      <div className="font-semibold text-right">1.80 - 1.95 LUSD</div>
+                      <div>Floor price:</div>
+                      <div className="font-semibold text-right">1.2835 LUSD</div>
+                      <div>Net asset value:</div>
+                      <div className="font-semibold text-right">1.7983 LUSD</div>
+                      <div>bLUSD APR:</div>
+                      <div className="font-semibold text-right">N/A %</div>
+                      <div>LP APR:</div>
+                      <div className="font-semibold text-right">0.00 %</div>
+                      <div>Yield amplification:</div>
+                      <div className="font-semibold text-right">N/A x</div>
+                      <div>Total supply:</div>
+                      <div className="font-semibold text-right">1.90M bLUSD</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex gap-1 items-center">{data?.tvl}</div>
-                <div>${data?.deposits}</div>
+                <div className="text-primary  font-bold flex items-start pl-4">
+                  <div className="text-sm text-white w-full">
+                    <div className="grid grid-cols-2 gap-y-2">
+                      <div>Pending bonds</div>
+                      <div className="font-semibold text-right">277</div>
+                      <div>Cancelled bonds</div>
+                      <div className="font-semibold text-right">1,663</div>
+                      <div>Claimed bonds</div>
+                      <div className="font-semibold text-right">697</div>
+                      <div>Total bonds</div>
+                      <div className="font-semibold text-right">2,637</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-primary  font-bold flex items-start pl-4">
+                  <div className="text-sm text-white w-full">
+                    <div className="grid grid-cols-2 gap-y-2">
+                      <div className="text-left">Pending</div>
+                      <div className="font-semibold text-right">285K LUSD</div>
+                      <div className="text-left">Reserve</div>
+                      <div className="font-semibold text-right">2.44M LUSD</div>
+                      <div className="text-left">Permanent</div>
+                      <div className="font-semibold text-right">981K LUSD</div>
+                      <div className="text-left">Total</div>
+                      <div className="font-semibold text-right">3.71M LUSD</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </>
-      ) : (
-        <div>Empty data</div>
-      )}
     </div>
   );
 };

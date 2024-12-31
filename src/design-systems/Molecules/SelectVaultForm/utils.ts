@@ -2,11 +2,13 @@ import { VaultCardData } from "@/design-systems/Templates/HomePageTemplate/utils
 
 export const vaultsCardPrismaData: VaultCardData[] = [
   {
-    type: "ETH",
-    name: "ETH",
-    description: "Description of Wrapped ETH card.",
-    icon: "https://app.prismafinance.com/collaterals/0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0.svg",
-    address: "0x1CC79f3F47BfC060b6F761FcD1afC6D399a968B6",
+    type: "TEstToken",
+    name: "TEstToken",
+    description: "Description of TEstToken card.",
+    icon: "/image/testToken.png",
+    prismLRTDesc:
+      "Borrowers will earn 1x KelpDao Miles on collateral supplied. Find out more",
+    address: "0x3f1e6c54B1f1e4870fb8D22653268c0477f0B61d",
     prismaType: "prisma",
   },
   {
@@ -71,16 +73,5 @@ export const vaultsCardPrismaData: VaultCardData[] = [
       "Borrowers will earn 1x KelpDao Miles on collateral supplied. Find out more",
     address: "0x335849A1C359E83dCa508101bD394a9D12E176b9",
     prismaType: "prismaLRT",
-  },
-
-  {
-    type: "TEstToken",
-    name: "TEstToken",
-    description: "Description of TEstToken card.",
-    icon: "/image/testToken.png",
-    prismLRTDesc:
-      "Borrowers will earn 1x KelpDao Miles on collateral supplied. Find out more",
-    address: "0xF6eF5A6a38DB44c0F8bb546B3a1f7A44a46Ef743",
-    prismaType: "prisma",
   },
 ];

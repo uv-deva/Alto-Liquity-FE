@@ -4,7 +4,7 @@ import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { Abi, zeroAddress } from "viem";
 import { ethers } from "ethers";
 
-import { ABI } from "@/abis/ABI";
+import { ChickenBondABI } from "@/abis/ChickenBondABI";
 import { ApproveABI } from "@/abis/ApproveABI";
 
 import Button from "@/design-systems/Atoms/Button";
@@ -15,7 +15,7 @@ import { useToken } from "@/hooks/useToken";
 import { CUSTOM_CHAIN_CONFIG } from "@/utils";
 import {
   DebtTokenContractAdd,
-  StabilityPoolContractAdd,
+  ChickenBondContractAdd,
 } from "@/utils/Contract";
 import { useModal } from "@/hooks/useModal";
 import { useWaitForTransaction } from "@/hooks/useWaitForTransaction";
@@ -24,6 +24,7 @@ import { WriteContractErrorType } from "wagmi/actions";
 export const TabsBond = ({ data, activeTab }: DepositProps) => {
   const { address, chainId, isConnected } = useAccount();
   const [amount, setAmount] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const [isLoadingWithdraw, setIsLoadingWithdraw] = useState<boolean>(false);
   const modal = useModal();
 
@@ -59,8 +60,18 @@ export const TabsBond = ({ data, activeTab }: DepositProps) => {
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /^\d*\.?\d*$/;
-    if (regex.test(e.target.value)) {
-      setAmount(e.target.value);
+    const value = e.target.value;
+
+    if (regex.test(value)) {
+      const numericValue = parseFloat(value); // Convert string to a number
+
+      if (value === '' || numericValue >= 100) {
+        setError(null); // Clear error if valid
+      } else {
+        setError('Amount must be greater than 100'); // Show error
+      }
+
+      setAmount(value); // Update the input value
     }
   };
 
@@ -71,7 +82,7 @@ export const TabsBond = ({ data, activeTab }: DepositProps) => {
           abi: ApproveABI,
           address: DebtTokenContractAdd,
           functionName: "approve",
-          args: [spenderAdd, ethers.utils.parseUnits(amount.toString(), 18)],
+          args: [ChickenBondContractAdd, ethers.utils.parseUnits(amount.toString(), 18)],
         });
 
         await waitForTransaction(hash);
@@ -92,10 +103,10 @@ export const TabsBond = ({ data, activeTab }: DepositProps) => {
   const handleDeposit = useCallback(async () => {
     try {
       const tx = await deposit({
-        abi: ABI,
-        address: StabilityPoolContractAdd,
-        functionName: "provideToSP",
-        args: [ethers.utils.parseUnits(amount.toString(), 18).toBigInt(), zeroAddress],
+        abi: ChickenBondABI,
+        address: ChickenBondContractAdd,
+        functionName: "createBond",
+        args: [ethers.utils.parseUnits(amount.toString(), 18).toBigInt()],
       });
 
       await waitForTransaction(tx);
@@ -105,7 +116,7 @@ export const TabsBond = ({ data, activeTab }: DepositProps) => {
         modalType: "TransactionConfirmation",
         type: "success",
         open: true,
-        data: <>Successfully Deposit {amount} LUSD</>,
+        data: <>Successfully Created Bond {amount} LUSD</>,
       });
     } catch (error) {
       console.log(error);
@@ -113,52 +124,13 @@ export const TabsBond = ({ data, activeTab }: DepositProps) => {
         modalType: "TransactionConfirmation",
         type: "error",
         open: true,
-        data: <>Something went wrong during deposit</>,
+        data: <>Something went wrong during create Bond</>,
       });
-      throw new Error("Something went wrong during deposit");
+      throw new Error("Something went wrong during create Bond");
     }
   }, [deposit, amount, waitForTransaction, LUSDToken, modal]);
 
   const handleWithdraw = useCallback(async () => {
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const StabilityContract = new ethers.Contract(
-        StabilityPoolContractAdd,
-        ABI,
-        signer
-      );
-      setIsLoadingWithdraw(true);
-      const tx = await StabilityContract.withdrawFromSP(
-        ethers.utils.parseUnits(amount.toString(), 18),
-        { gasLimit: ethers.utils.hexlify(3401649) }
-      );
-
-      await waitForTransaction(tx?.hash);
-      LUSDToken.refetch();
-      modal.setOpen({
-        modalType: "TransactionConfirmation",
-        type: "success",
-        open: true,
-        data: <>Successfully withdraw {amount} LUSD</>,
-      });
-      setAmount("");
-    } catch (error) {
-      const e = error as WriteContractErrorType;
-      console.log(e);
-      const message = e.message.includes("User must have a non-zero deposit")
-        ? "You have not any withdrawable balance."
-        : "Something went wrong during withdrawal";
-      modal.setOpen({
-        modalType: "TransactionConfirmation",
-        type: "error",
-        open: true,
-        data: <>{message}</>,
-      });
-      throw new Error(message);
-    } finally {
-      setIsLoadingWithdraw(false);
-    }
   }, [amount, waitForTransaction, LUSDToken, modal]);
 
   const handleTransaction = useCallback(async () => {
@@ -212,7 +184,7 @@ export const TabsBond = ({ data, activeTab }: DepositProps) => {
     <div>
       <div className="flex justify-between w-full text-[12px] sm:text-[14px] font-medium">
         <div>
-          {activeTab == 0 ? "Deposit" : "Withdraw"}{" "}
+          {activeTab == 0 ? "Bond" : "Withdraw"}{" "}
           <span className="font-bold">{data?.name}</span>
         </div>
         <div className="!font-normal">
@@ -233,6 +205,7 @@ export const TabsBond = ({ data, activeTab }: DepositProps) => {
             value={amount}
             onChange={handleAmountChange}
           />
+          {error && <span className="text-red-500 text-sm">{error}</span>}
         </div>
         <div className="flex items-center bg-lightBlack p-2 text-white text-[12px] sm:text-[14px] font-bold rounded-r-[7px]">
           {LUSDToken?.symbol}
@@ -244,7 +217,7 @@ export const TabsBond = ({ data, activeTab }: DepositProps) => {
         className={`bg-primary py-[6px] px-[16px] w-full text-[14px] font-bold !text-black `}
         disabled={isLoading}
       >
-        {isLoading ? "Loading..." : activeTab == 0 ? "Deposit" : "Withdraw"}
+        {isLoading ? "Loading..." : activeTab == 0 ? "CreateBond" : "Withdraw"}
       </Button>
     </div>
   );
