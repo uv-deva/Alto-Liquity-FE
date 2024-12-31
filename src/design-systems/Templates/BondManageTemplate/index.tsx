@@ -80,7 +80,7 @@ const BondManageTemplate: React.FC = () => {
               <div>
                 <div className="p-3 sm:p-6 text-[14px] sm:text-[16px] text-center">
                 When the bLUSD market price is less than 3% above the floor price,
-                it's not profitable to bond. Buying bLUSD from the market currently
+                its not profitable to bond. Buying bLUSD from the market currently
                 generates a higher return than bondingRead more.
                 </div>
 

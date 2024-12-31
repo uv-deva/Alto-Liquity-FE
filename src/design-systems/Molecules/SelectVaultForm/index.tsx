@@ -120,7 +120,7 @@ const SelectVaultForm: React.FC<VaultsFormProps> = ({ urlAddress }) => {
         address: BorrowerContractAdd,
         functionName: "openTrove",
         args: [
-          urlAddress,
+          urlAddress as `0x${string}`,
           BigInt(_debtAmount),
           BigInt(_maxFeePercentage),
           BigInt(_collateralAmount),

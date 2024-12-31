@@ -131,7 +131,7 @@ export const TabsBond = ({ data, activeTab }: DepositProps) => {
   }, [deposit, amount, waitForTransaction, LUSDToken, modal]);
 
   const handleWithdraw = useCallback(async () => {
-  }, [amount, waitForTransaction, LUSDToken, modal]);
+  }, []);
 
   const handleTransaction = useCallback(async () => {
     if (!isConnected) {

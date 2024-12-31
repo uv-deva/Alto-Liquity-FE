@@ -7,6 +7,7 @@ import Button from "../Button";
 import Typography from "../Typography";
 import { DAOdata, DaoDataInterface } from "./utils";
 import { InfoOutlineIcon } from "@/design-systems/Atoms/Icons";
+import Image from 'next/image';
 
 export const Emission: React.FC = () => {
   const EmissionTab = [
@@ -74,7 +75,7 @@ export const Emission: React.FC = () => {
               {DAOdata?.map((item: DaoDataInterface, key: number) => (
                 <tr key={key} className="text-body">
                   <td className="flex gap-2 items-center">
-                    <img src={item.img} alt="image" />
+                    <Image src={item.img} alt="image"/>
                     {item?.label}
                   </td>
                   <td>0.0%</td>
