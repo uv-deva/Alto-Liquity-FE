@@ -1,11 +1,11 @@
-import BondManageTemplate from "@/design-systems/Templates/BondManageTemplate";
+import EarnManageTemplate from "@/design-systems/Templates/EarnManageTemplate";
 
-const BondManage: React.FC = () => {
+const EarnManage: React.FC = () => {
   return (
     <div className="flex flex-col justify-center items-center">
-      <BondManageTemplate />
+      <EarnManageTemplate />
     </div>
   );
 };
 
-export default BondManage;
+export default EarnManage;
